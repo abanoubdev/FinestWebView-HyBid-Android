@@ -1,16 +1,15 @@
 ext.versions = [
         minSdk            : 16,
-        compileSdk        : 30,
-        buildTools        : '30.0.2',
-
+        compileSdk        : 34,
+        buildTools        : '33.0.1',
         publishVersion    : '1.2.7',
         publishVersionCode: 9,
 ]
 
 ext.deps = [
         gradlePlugins: [
-                android: 'com.android.tools.build:gradle:4.2.1',
-                kotlin : 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10',
+                android: 'com.android.tools.build:gradle:8.1.0',
+                kotlin : 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22',
                 bintray: 'com.novoda:bintray-release:0.9',
         ],
 

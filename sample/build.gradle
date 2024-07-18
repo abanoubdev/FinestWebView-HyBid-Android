@@ -5,10 +5,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
     defaultConfig {
         applicationId "com.thefinestartist.finestwebview.sample"
         minSdkVersion versions.minSdk
@@ -23,6 +20,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    namespace 'com.thefinestartist.finestwebview.sample'
 }
 
 dependencies {
@@ -30,7 +40,6 @@ dependencies {
     implementation project(':library')
     implementation deps.androidx.appcompat
     implementation deps.kotlin.stdlib8
-    //    implementation deps.finestWebView
 }
 repositories {
     mavenCentral()

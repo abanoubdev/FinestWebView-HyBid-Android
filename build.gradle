@@ -1,12 +1,15 @@
 buildscript {
     apply from: rootProject.file('dependencies.gradle')
+    ext {
+        agp_version = '8.1.0'
+    }
 
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath deps.gradlePlugins.android
+        classpath "com.android.tools.build:gradle:$agp_version"
         classpath deps.gradlePlugins.kotlin
         classpath deps.gradlePlugins.bintray
     }

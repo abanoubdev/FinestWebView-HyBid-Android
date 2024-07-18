@@ -1,7 +1,6 @@
 apply from: rootProject.file('dependencies.gradle')
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -18,6 +17,16 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    namespace 'com.thefinestartist.finestwebview.library'
 }
 
 dependencies {
@@ -29,17 +38,6 @@ dependencies {
     implementation deps.kotlin.stdlib8
 }
 
-publish {
-    userOrg = 'thefinestartist'
-    groupId = 'com.thefinestartist'
-    artifactId = 'finestwebview'
-    publishVersion = versions.publishVersion
-    desc = 'Beautiful and customizable Android Activity that shows web pages within an app.'
-    website = 'https://finestwebview.com'
-}
-
 repositories {
     mavenCentral()
 }
-
-//$ ./gradlew clean build bintrayUpload -PbintrayUser=thefinestartist -PbintrayKey=BINTRAY_KEY -PdryRun=false
