@@ -13,14 +13,13 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
-import com.thefinestartist.finestwebview.enums.ProgressBarPosition
 import com.thefinestartist.finestwebview.library.R
 import com.thefinestartist.finestwebview.listeners.BroadCastManager
 import com.thefinestartist.finestwebview.listeners.WebViewListener
 import java.io.Serializable
 import java.util.*
 
-/** Created by Leonardo on 11/21/15.  */
+
 data class FinestWebView(
     @Transient var context: Context,
     @Transient var listeners: MutableList<WebViewListener> = ArrayList(),
@@ -29,11 +28,6 @@ data class FinestWebView(
 
     var rtl: Boolean? = null,
     var theme: Int? = null,
-
-    var statusBarColor: Int? = null,
-
-    var toolbarColor: Int? = null,
-    var toolbarScrollFlags: Int? = null,
 
     var iconDefaultColor: Int? = null,
     var iconDisabledColor: Int? = null,
@@ -61,7 +55,6 @@ data class FinestWebView(
     var showProgressBar: Boolean? = null,
     var progressBarColor: Int? = null,
     var progressBarHeight: Float? = null,
-    var progressBarPosition: ProgressBarPosition? = null,
 
     var titleDefault: String? = null,
     var updateTitleFromHtml: Boolean? = null,
@@ -174,16 +167,6 @@ data class FinestWebView(
 
     fun rtl(rtl: Boolean) = apply { this.rtl = rtl }
 
-    fun theme(@StyleRes theme: Int) = apply { this.theme = theme }
-
-    fun statusBarColor(@ColorInt color: Int) = apply { this.statusBarColor = color }
-    fun statusBarColorRes(@ColorRes colorRes: Int) =
-        apply { this.statusBarColor = ContextCompat.getColor(context, colorRes) }
-
-    fun toolbarColor(@ColorInt color: Int) = apply { this.toolbarColor = color }
-    fun toolbarColorRes(@ColorRes colorRes: Int) =
-        apply { this.toolbarColor = ContextCompat.getColor(context, colorRes) }
-
     fun iconDefaultColor(@ColorInt color: Int) = apply { this.iconDefaultColor = color }
     fun iconDefaultColorRes(@ColorRes color: Int) =
         apply { this.iconDefaultColor = ContextCompat.getColor(context, color) }
@@ -204,6 +187,7 @@ data class FinestWebView(
 
     fun showIconBack(showIconBack: Boolean) = apply { this.showIconBack = showIconBack }
     fun disableIconBack(disableIconBack: Boolean) = apply { this.disableIconBack = disableIconBack }
+    fun theme(resourceStyleable: Int) = apply { this.theme = resourceStyleable }
 
     fun showIconForward(showIconForward: Boolean) = apply { this.showIconForward = showIconForward }
     fun disableIconForward(disableIconForward: Boolean) =
@@ -244,20 +228,6 @@ data class FinestWebView(
     fun dividerHeight(height: Int) = apply { this.dividerHeight = height.toFloat() }
     fun dividerHeightRes(@DimenRes height: Int) =
         apply { this.dividerHeight = context.resources.getDimension(height) }
-
-    fun showProgressBar(showProgressBar: Boolean) = apply { this.showProgressBar = showProgressBar }
-
-    fun progressBarColor(@ColorInt color: Int) = apply { this.progressBarColor = color }
-    fun progressBarColorRes(@ColorRes colorRes: Int) =
-        apply { this.progressBarColor = ContextCompat.getColor(context, colorRes) }
-
-    fun progressBarHeight(height: Float) = apply { this.progressBarHeight = height }
-    fun progressBarHeight(height: Int) = apply { this.progressBarHeight = height.toFloat() }
-    fun progressBarHeightRes(@DimenRes height: Int) =
-        apply { this.progressBarHeight = context.resources.getDimension(height) }
-
-    fun progressBarPosition(progressBarPosition: ProgressBarPosition) =
-        apply { this.progressBarPosition = progressBarPosition }
 
     fun titleDefault(title: String) = apply { this.titleDefault = title }
     fun titleDefaultRes(@StringRes stringRes: Int) =

@@ -1,5 +1,6 @@
 package com.thefinestartist.finestwebview.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -24,16 +25,7 @@ public class MainActivity extends AppCompatActivity {
             //                    .webViewUseWideViewPort(false)
             //                    .show("http://www.youtube.com");
         } else if (view.getId() == R.id.redTheme) {
-            //            Intent intent = new Intent(this, WebViewActivity.class);
-            //            startActivity(intent);
-            new FinestWebView(this)
-                    .theme(R.style.RedTheme)
-                    .titleDefault("Bless This Stuff")
-                    .webViewBuiltInZoomControls(true)
-                    .webViewDisplayZoomControls(true)
-                    .dividerHeight(0)
-                    .gradientDivider(false)
-                    .injectJavaScript(
+            new FinestWebView(this).titleDefault("The Finest Artist").injectJavaScript(
                             "javascript: document.getElementById('msg').innerHTML='Hello "
                                     + "TheFinestArtist"
                                     + "!';")
@@ -42,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
             new FinestWebView(this)
                     .titleDefault("Vimeo")
                     .showUrl(false)
-                    .statusBarColorRes(R.color.bluePrimaryDark)
-                    .toolbarColorRes(R.color.bluePrimary)
                     .urlColorRes(R.color.bluePrimaryLight)
                     .showSwipeRefreshLayout(true)
                     .swipeRefreshColorRes(R.color.bluePrimaryDark)
@@ -53,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.blackTheme) {
             new FinestWebView(this)
                     .titleDefault("Dribbble")
-                    .statusBarColorRes(R.color.blackPrimaryDark)
-                    .toolbarColorRes(R.color.blackPrimary)
                     .urlColorRes(R.color.blackPrimaryLight)
                     .swipeRefreshColorRes(R.color.blackPrimaryDark)
                     .menuTextGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT)

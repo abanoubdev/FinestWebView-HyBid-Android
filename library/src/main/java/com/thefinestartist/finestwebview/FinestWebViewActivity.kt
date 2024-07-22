@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
-import android.graphics.drawable.BitmapDrawable
 import android.net.MailTo
 import android.net.Uri
 import android.os.Build.VERSION
@@ -23,17 +22,11 @@ import android.webkit.WebSettings.LayoutAlgorithm
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.appbar.AppBarLayout
-import com.thefinestartist.finestwebview.enums.ProgressBarPosition
 import com.thefinestartist.finestwebview.library.R
 import com.thefinestartist.finestwebview.listeners.BroadCastManager.Companion.onDownloadStart
 import com.thefinestartist.finestwebview.listeners.BroadCastManager.Companion.onLoadResource
@@ -44,19 +37,13 @@ import com.thefinestartist.finestwebview.listeners.BroadCastManager.Companion.on
 import com.thefinestartist.finestwebview.listeners.BroadCastManager.Companion.onReceivedTitle
 import com.thefinestartist.finestwebview.listeners.BroadCastManager.Companion.onReceivedTouchIconUrl
 import com.thefinestartist.finestwebview.listeners.BroadCastManager.Companion.unregister
-import com.thefinestartist.finestwebview.utils.BitmapUtil.getGradientBitmap
 import com.thefinestartist.finestwebview.utils.ColorUtil.disableColor
 import com.thefinestartist.finestwebview.utils.DisplayUtil.getHeight
 import com.thefinestartist.finestwebview.utils.DisplayUtil.getStatusBarHeight
 import com.thefinestartist.finestwebview.utils.DisplayUtil.getWidth
 import com.thefinestartist.finestwebview.utils.TypefaceUtil
 import com.thefinestartist.finestwebview.utils.UnitConverter.dpToPx
-import com.thefinestartist.finestwebview.utils.UrlParser.getHost
-import com.thefinestartist.finestwebview.views.ShadowLayout
 
-/**
- * Created by Abanoub Barayo on 18/07/24.
- */
 class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
 
     protected var key = 0
@@ -90,11 +77,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
     protected var gradientDivider = false
     protected var dividerColor = 0
     protected var dividerHeight = 0f
-
-    protected var showProgressBar = false
-    protected var progressBarColor = 0
-    protected var progressBarHeight = 0f
-    protected var progressBarPosition: ProgressBarPosition? = null
 
     protected var titleDefault: String? = null
     protected var updateTitleFromHtml = false
@@ -186,11 +168,11 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
     protected var data: String? = null
     protected var url: String? = null
     protected var coordinatorLayout: CoordinatorLayout? = null
-//    protected var close: AppCompatImageButton? = null
+
+    //    protected var close: AppCompatImageButton? = null
 //    protected var back: AppCompatImageButton? = null
 //    protected var forward: AppCompatImageButton? = null
 //    protected var more: AppCompatImageButton? = null
-    protected var swipeRefreshLayout: SwipeRefreshLayout? = null
     protected var webView: WebView? = null
     protected var gradient: View? = null
     protected var divider: View? = null
@@ -249,12 +231,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
         key = finestWebView.key!!
         rtl =
             if (finestWebView.rtl != null) finestWebView.rtl!! else resources.getBoolean(R.bool.is_right_to_left)
-        statusBarColor =
-            if (finestWebView.statusBarColor != null) finestWebView.statusBarColor!! else colorPrimaryDark
-        toolbarColor =
-            if (finestWebView.toolbarColor != null) finestWebView.toolbarColor!! else colorPrimary
-        toolbarScrollFlags =
-            if (finestWebView.toolbarScrollFlags != null) finestWebView.toolbarScrollFlags!! else AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
         iconDefaultColor =
             if (finestWebView.iconDefaultColor != null) finestWebView.iconDefaultColor!! else colorAccent
         iconDisabledColor =
@@ -304,16 +280,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
             if (finestWebView.dividerHeight != null) finestWebView.dividerHeight!! else resources.getDimension(
                 R.dimen.defaultDividerHeight
             )
-        showProgressBar =
-            if (finestWebView.showProgressBar != null) finestWebView.showProgressBar!! else true
-        progressBarColor =
-            if (finestWebView.progressBarColor != null) finestWebView.progressBarColor!! else colorAccent
-        progressBarHeight =
-            if (finestWebView.progressBarHeight != null) finestWebView.progressBarHeight!! else resources.getDimension(
-                R.dimen.defaultProgressBarHeight
-            )
-        progressBarPosition =
-            if (finestWebView.progressBarPosition != null) finestWebView.progressBarPosition else ProgressBarPosition.BOTTOM_OF_TOOLBAR
         titleDefault = finestWebView.titleDefault
         updateTitleFromHtml =
             if (finestWebView.updateTitleFromHtml != null) finestWebView.updateTitleFromHtml!! else true
@@ -464,7 +430,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
 //        back!!.setOnClickListener(this)
 //        forward!!.setOnClickListener(this)
 //        more!!.setOnClickListener(this)
-        swipeRefreshLayout = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         gradient = findViewById(R.id.gradient)
         divider = findViewById(R.id.divider)
         progressBar = findViewById<View>(R.id.progressBar) as ProgressBar
@@ -504,8 +469,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
                 settings.builtInZoomControls = webViewBuiltInZoomControls!!
                 if (webViewBuiltInZoomControls as Boolean) { // Remove NestedScrollView to enable BuiltInZoomControls
                     (webView!!.parent as ViewGroup).removeAllViews()
-                    swipeRefreshLayout!!.addView(webView)
-                    swipeRefreshLayout!!.removeViewAt(1)
                 }
             }
             if (webViewDisplayZoomControls != null && VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
@@ -634,18 +597,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
                 webView!!.loadUrl(url!!)
             }
         }
-        run { // SwipeRefreshLayout
-            swipeRefreshLayout!!.isEnabled = showSwipeRefreshLayout
-            if (showSwipeRefreshLayout) {
-                swipeRefreshLayout!!.post { swipeRefreshLayout!!.isRefreshing = true }
-            }
-            if (swipeRefreshColors == null) {
-                swipeRefreshLayout!!.setColorSchemeColors(swipeRefreshColor)
-            } else {
-                swipeRefreshLayout!!.setColorSchemeColors(swipeRefreshColor)
-            }
-            swipeRefreshLayout!!.setOnRefreshListener { webView!!.reload() }
-        }
 //        run { // Divider
 //            gradient!!.visibility = if (showDivider && gradientDivider) View.VISIBLE else View.GONE
 //            divider!!.visibility = if (showDivider && !gradientDivider) View.VISIBLE else View.GONE
@@ -664,42 +615,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
 //                divider!!.layoutParams = params
 //            }
 //        }
-        run { // ProgressBar
-            progressBar!!.visibility = if (showProgressBar) View.VISIBLE else View.GONE
-            progressBar!!.progressDrawable.setColorFilter(progressBarColor, PorterDuff.Mode.SRC_IN)
-            progressBar!!.minimumHeight = progressBarHeight.toInt()
-            val params = CoordinatorLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                progressBarHeight.toInt()
-            )
-            val toolbarHeight = resources.getDimension(R.dimen.toolbarHeight)
-            when (progressBarPosition) {
-                ProgressBarPosition.TOP_OF_TOOLBAR -> params.setMargins(0, 0, 0, 0)
-                ProgressBarPosition.BOTTOM_OF_TOOLBAR -> params.setMargins(
-                    0,
-                    toolbarHeight.toInt() - progressBarHeight.toInt(),
-                    0,
-                    0
-                )
-
-                ProgressBarPosition.TOP_OF_WEBVIEW -> params.setMargins(
-                    0,
-                    toolbarHeight.toInt(),
-                    0,
-                    0
-                )
-
-                ProgressBarPosition.BOTTOM_OF_WEBVIEW -> params.setMargins(
-                    0,
-                    getHeight(this) - progressBarHeight.toInt(),
-                    0,
-                    0
-                )
-
-                else -> params.setMargins(0, 0, 0, 0)
-            }
-            progressBar!!.layoutParams = params
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -799,14 +714,6 @@ class FinestWebViewActivity : AppCompatActivity(), View.OnClickListener {
         override fun onProgressChanged(view: WebView, progress: Int) {
             var progress = progress
             onProgressChanged(this@FinestWebViewActivity, key, progress)
-            if (showSwipeRefreshLayout) {
-                if (swipeRefreshLayout!!.isRefreshing && progress == 100) {
-                    swipeRefreshLayout!!.post { swipeRefreshLayout!!.isRefreshing = false }
-                }
-                if (!swipeRefreshLayout!!.isRefreshing && progress != 100) {
-                    swipeRefreshLayout!!.post { swipeRefreshLayout!!.isRefreshing = true }
-                }
-            }
             if (progress == 100) {
                 progress = 0
             }
